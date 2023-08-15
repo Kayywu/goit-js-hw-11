@@ -1,8 +1,11 @@
 import Notiflix from 'notiflix';
+import axios from 'axios'; 
+import SimpleLightbox from 'simplelightbox';
 
 const BASE_URL = 'https://pixabay.com/api/';
 let queryToFetch = '';
 let pageToFetch = 1;
+const perPage = 40;
 
 
 const searchEl = document.querySelector('.search-form');
@@ -33,25 +36,19 @@ function onBtnLoadMoreClick() {
   getImages(queryToFetch, pageToFetch);
 }
 
+// axios //
 
-function fetchImages(queryToFetch, pageToFetch) {
-  const searchParams = new URLSearchParams({
-    key: '37030220-55e5b35e4370d44ae057df5d9',
-    q: queryToFetch,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    per_page: 40,
-    page: pageToFetch,
-  });
-  return fetch(`${BASE_URL}?${searchParams}`).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    return response.json();
-  });
+axios.defaults.baseURL = 'https://pixabay.com/api/';
+const KEY = '38858109-c828e4419821e6c1b097414a2';
+
+async function fetchImages(queryToFetch, pageToFetch, perPage) {
+  const response = await axios.get(
+    `?key=${KEY}&q={querytoFetch}&image_type=photo&orientation=horizontal&safesearch=true&pageToFetch=${pageToFetch}&perPage=${perPage}`
+  );
+  return response;
 }
 
+// rendering images //
 
 function renderImages(images) {
 
