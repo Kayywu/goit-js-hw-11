@@ -91,7 +91,7 @@ function getImages(query, pageToFetch) {
   fetchImages(query, pageToFetch)
     .then(images => {
       console.log(images);
-      if (!images.hits.length) {
+      if (!images.hits?.length) {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
