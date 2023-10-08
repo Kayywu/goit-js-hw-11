@@ -1,6 +1,5 @@
 import Notiflix from 'notiflix';
 import { fetchImages } from './api'
-import SimpleLightbox from 'simplelightbox';
 
 const BASE_URL = 'https://pixabay.com/api/';
 let queryToFetch = '';
@@ -19,7 +18,7 @@ btnLoad.addEventListener('click', onBtnLoadMoreClick);
 function onSubmitForm(event) {
   event.preventDefault();
   const query = event.currentTarget.elements.searchQuery.value;
-  if (!query.trim() || query === $queryToFetch) {
+  if (!query.trim() || query === queryToFetch) {
     return;
   }
   queryToFetch = query;
@@ -35,6 +34,7 @@ function onBtnLoadMoreClick() {
   pageToFetch += 1;
   getImages(queryToFetch, pageToFetch);
 }
+
 
 
 
@@ -81,6 +81,7 @@ async function getImages(query, pageToFetch, perPage = 10) {
   try {
     const images = await fetchImages(query, pageToFetch);
     console.log(images);
+    renderImages(images);
 
       if (!images.hits?.length) {
         Notiflix.Notify.failure(
@@ -88,8 +89,6 @@ async function getImages(query, pageToFetch, perPage = 10) {
         );
         return;
       }
-      renderImages(images);
-    btnLoad.classList.remove('invisible'); 
   }
   
      catch(error) {
