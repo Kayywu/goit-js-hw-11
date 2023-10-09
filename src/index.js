@@ -4,7 +4,7 @@ import { fetchImages } from './api'
 const BASE_URL = 'https://pixabay.com/api/';
 let queryToFetch = '';
 let pageToFetch = 1;
-const perPage = 40;
+const perPage = 10;
 
 
 const searchEl = document.querySelector('.search-form');
@@ -76,12 +76,14 @@ function renderImages(images) {
   galleryEl.insertAdjacentHTML('beforeend', markup);
 }
 
+const totalHits = 30;
 
 async function getImages(query, pageToFetch, perPage = 10) {
   try {
     const images = await fetchImages(query, pageToFetch);
-    console.log(images);
+   console.log(images)
     renderImages(images);
+    
 
       if (!images.hits?.length) {
         Notiflix.Notify.failure(
@@ -89,8 +91,15 @@ async function getImages(query, pageToFetch, perPage = 10) {
         );
         return;
       }
+      if (pageToFetch * perPage >= totalHits) {
+        console.log('Przycisk zostanie ukryty');
+        btnLoad.classList.add('invisible'); 
+      } else {
+        console.log('Przycisk zostanie pokazany');
+        btnLoad.classList.remove('invisible'); 
+      }
   }
-  
+ 
      catch(error) {
       console.log(error);
       Notiflix.Notify.failure('Oops! Something went wrong!');
