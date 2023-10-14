@@ -19,18 +19,18 @@ function onSubmitForm(event) {
   event.preventDefault();
   const query = event.currentTarget.elements.searchQuery.value;
   if (!query.trim() || query === queryToFetch) {
+    btnLoad.classList.remove('invisible')
     return;
   }
   queryToFetch = query;
   galleryEl.innerHTML = '';
-  btnLoad.classList.add('unvisible');
   getImages(queryToFetch, pageToFetch);
   searchEl.reset();
+  
 }
 
 
 function onBtnLoadMoreClick() {
-  btnLoad.classList.add('unvisible');
   pageToFetch += 1;
   getImages(queryToFetch, pageToFetch);
 }
@@ -76,14 +76,18 @@ function renderImages(images) {
   galleryEl.insertAdjacentHTML('beforeend', markup);
 }
 
-const totalHits = 30;
+const totalHits = 0;
 
 async function getImages(query, pageToFetch, perPage = 10) {
   try {
     const images = await fetchImages(query, pageToFetch);
    console.log(images)
     renderImages(images);
+    totalHits = images.totalHits;
     
+    if (pageToFetch * perPage >= totalHits) {
+      btnLoad.classList.add('invisible');
+    }
 
       if (!images.hits?.length) {
         Notiflix.Notify.failure(
@@ -91,15 +95,7 @@ async function getImages(query, pageToFetch, perPage = 10) {
         );
         return;
       }
-      if (pageToFetch * perPage >= totalHits) {
-        console.log('Przycisk zostanie ukryty');
-        btnLoad.classList.add('invisible'); 
-      } else {
-        console.log('Przycisk zostanie pokazany');
-        btnLoad.classList.remove('invisible'); 
-      }
   }
- 
      catch(error) {
       console.log(error);
       Notiflix.Notify.failure('Oops! Something went wrong!');
