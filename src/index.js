@@ -4,7 +4,7 @@ import { fetchImages } from './api'
 const BASE_URL = 'https://pixabay.com/api/';
 let queryToFetch = '';
 let pageToFetch = 1;
-const perPage = 10;
+const perPage = 40;
 
 
 const searchEl = document.querySelector('.search-form');
@@ -19,13 +19,13 @@ function onSubmitForm(event) {
   event.preventDefault();
   const query = event.currentTarget.elements.searchQuery.value;
   if (!query.trim() || query === queryToFetch) {
-    btnLoad.classList.remove('invisible')
     return;
   }
   queryToFetch = query;
   galleryEl.innerHTML = '';
   getImages(queryToFetch, pageToFetch);
   searchEl.reset();
+ 
   
 }
 
@@ -76,7 +76,7 @@ function renderImages(images) {
   galleryEl.insertAdjacentHTML('beforeend', markup);
 }
 
-const totalHits = 0;
+let totalHits = 0;
 
 async function getImages(query, pageToFetch, perPage = 10) {
   try {
