@@ -25,6 +25,7 @@ function onSubmitForm(event) {
   galleryEl.innerHTML = '';
   getImages(queryToFetch, pageToFetch);
   searchEl.reset();
+  btnLoad.classList.remove('invisible')
  
   
 }
@@ -78,9 +79,9 @@ function renderImages(images) {
 
 let totalHits = 0;
 
-async function getImages(query, pageToFetch, perPage = 10) {
+async function getImages() {
   try {
-    const images = await fetchImages(query, pageToFetch);
+    const images = await fetchImages(queryToFetch, pageToFetch);
    console.log(images)
     renderImages(images);
     totalHits = images.totalHits;
