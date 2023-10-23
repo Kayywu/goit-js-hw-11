@@ -23,7 +23,7 @@ function onSubmitForm(event) {
   }
   queryToFetch = query;
   galleryEl.innerHTML = '';
-  getImages(queryToFetch, pageToFetch);
+  getImages();
   searchEl.reset();
   btnLoad.classList.remove('invisible')
  
@@ -33,7 +33,7 @@ function onSubmitForm(event) {
 
 function onBtnLoadMoreClick() {
   pageToFetch += 1;
-  getImages(queryToFetch, pageToFetch);
+  getImages();
 }
 
 
